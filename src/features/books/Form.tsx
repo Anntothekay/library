@@ -1,19 +1,19 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { save, selectBook, selectSaveState } from "./booksSlice";
-import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
-import { InputBook } from "./Book";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { selectBook, selectSaveState } from './booksSlice';
+import { useForm } from 'react-hook-form';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useAppDispatch } from '../../app/hooks';
+import { InputBook } from './Book';
+import { saveAction } from './books.actions';
 
 const Form: React.FC = () => {
   const getBook = useSelector(selectBook);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { register, handleSubmit, reset } = useForm<InputBook>({
-    defaultValues: { title: "", author: "", isbn: "" },
+    defaultValues: { title: '', author: '', isbn: '' },
   });
-
   const saveState = useSelector(selectSaveState);
 
   const { id } = useParams<{ id?: string }>();
@@ -24,27 +24,29 @@ const Form: React.FC = () => {
       reset(book);
     }
   }, [id, reset, getBook]);
+
   return (
     <>
-      {saveState === "pending" && <div>Daten werden gespeichert.</div>}
-      {saveState === "error" && <div>Es ist ein Fehler aufgetreten.</div>}
+      {saveState === 'pending' && <div>Daten werden gespeichert.</div>}
+      {saveState === 'error' && <div>Es ist ein Fehler aufgetreten.</div>}
+
       <form
         onSubmit={handleSubmit((data) => {
-          dispatch(save(data));
-          navigate("/list");
+          dispatch(saveAction.request(data));
+          navigate('/list');
         })}
       >
         <div>
           <label htmlFor="title">Titel:</label>
-          <input type="text" {...register("title")} />
+          <input type="text" {...register('title')} />
         </div>
         <div>
           <label htmlFor="author">Autor:</label>
-          <input type="text" {...register("author")} />
+          <input type="text" {...register('author')} />
         </div>
         <div>
           <label htmlFor="isbn">ISBN:</label>
-          <input type="text" {...register("isbn")} />
+          <input type="text" {...register('isbn')} />
         </div>
         <div>
           <button type="submit">speichern</button>
@@ -53,4 +55,5 @@ const Form: React.FC = () => {
     </>
   );
 };
+
 export default Form;

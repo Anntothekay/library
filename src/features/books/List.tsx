@@ -1,36 +1,34 @@
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { useAppDispatch } from "../../app/hooks";
+import React, { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../app/hooks';
+import { loadDataAction, removeAction } from './books.actions';
 import {
   selectBooks,
-  remove,
   selectLoadingState,
-  loadData,
   selectRemoveState,
-} from "./booksSlice";
+} from './booksSlice';
 
 const List: React.FC = () => {
   const books = useSelector(selectBooks);
   const loadingState = useSelector(selectLoadingState);
   const removeState = useSelector(selectRemoveState);
-
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
-    dispatch(loadData());
+    dispatch(loadDataAction.request());
   }, [dispatch]);
 
-  if (loadingState === "pending") {
+  if (loadingState === 'pending') {
     return <div>...loading</div>;
-  } else if (loadingState === "error") {
+  } else if (loadingState === 'error') {
     return <div>Ein Fehler ist aufgetreten!</div>;
   } else {
     return (
       <>
-        {removeState === "pending" && <div>Datensatz wird gelöscht</div>}
-        {removeState === "error" && (
+        {removeState === 'pending' && <div>Datensatz wird gelöscht</div>}
+        {removeState === 'error' && (
           <div>Beim Löschen ist ein Fehler aufgetreten</div>
         )}
         <table>
@@ -50,7 +48,9 @@ const List: React.FC = () => {
                 <td>{book.author}</td>
                 <td>{book.isbn}</td>
                 <td>
-                  <button onClick={() => dispatch(remove(book.id))}>
+                  <button
+                    onClick={() => dispatch(removeAction.request(book.id))}
+                  >
                     löschen
                   </button>
                 </td>
@@ -63,7 +63,7 @@ const List: React.FC = () => {
             ))}
           </tbody>
         </table>
-        <button onClick={() => navigate("/new")}>neu</button>
+        <button onClick={() => navigate('/new')}>neu</button>
       </>
     );
   }

@@ -16,10 +16,16 @@
     },
     {
       "id": 3,
-      "title": "Design Patterns",
+      "title": "Design Patterns 5",
       "author": "Erich Gamma",
       "isbn": "978-0201633610",
       "rating": 5
+    },
+    {
+      "title": "Fate",
+      "author": "Ann Kay",
+      "isbn": "123445677895",
+      "id": 4
     }
   ]
 }

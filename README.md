@@ -1,4 +1,4 @@
-# CRUD App to organize a list of books using React Redux (and React Router v6, React Hook Form, Create-React-App)
+# CRUD App to organize a list of books using React Redux + Redux Observable (and React Router v6, React Hook Form, Create-React-App)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app), using the [Redux](https://redux.js.org/) and [Redux Toolkit](https://redux-toolkit.js.org/) TS template.
 

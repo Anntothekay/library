@@ -17,10 +17,21 @@ export const booksSlice = createSlice({
       const index = state.books.findIndex((book) => book.id === action.payload);
       state.books.splice(index, 1);
     },
+    save(state, action: PayloadAction<InputBook>) {
+      if (action.payload.id) {
+        const index = state.books.findIndex(
+          (book) => book.id === action.payload.id
+        );
+        state.books[index] = action.payload as Book;
+      } else {
+        const nextId = Math.max(...state.books.map((book) => book.id)) + 1;
+        state.books.push({ ...action.payload, id: nextId });
+      }
+    },
   },
 });
 
-export const { remove } = booksSlice.actions;
+export const { remove, save } = booksSlice.actions;
 
 export const selectBooks = (state: RootState) => state.books.books;
 export const selectRatingFilter = (state: RootState) =>

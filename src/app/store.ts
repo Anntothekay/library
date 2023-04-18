@@ -1,6 +1,8 @@
 import { createEpicMiddleware } from "redux-observable";
 import { configureStore } from "@reduxjs/toolkit";
 import booksReducer from "../features/books/booksSlice";
+import loginReducer from "../features/login/loginSlice";
+
 import rootEpic from "./rootEpic";
 
 const epicMiddleware = createEpicMiddleware();
@@ -8,6 +10,7 @@ const epicMiddleware = createEpicMiddleware();
 export const store = configureStore({
   reducer: {
     books: booksReducer,
+    login: loginReducer,
   },
   devTools: true,
   middleware(getDefaultMiddleware) {

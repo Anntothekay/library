@@ -1,14 +1,19 @@
 import { combineEpics, ofType, Epic } from "redux-observable";
 import { from, of } from "rxjs";
 import { map, catchError, switchMap } from "rxjs/operators";
+import { selectToken } from "../login/loginSlice";
 import { loadDataAction, removeAction, saveAction } from "./books.actions";
 
-const loadData: Epic = (action$) =>
+const loadData: Epic = (action$, state$) =>
   action$.pipe(
     ofType(loadDataAction.request),
     switchMap(() =>
       from(
-        fetch("http://localhost:3001/books").then((response) => {
+        fetch("http://localhost:3001/books", {
+          headers: {
+            Authorization: `Bearer ${selectToken(state$.value)}`,
+          },
+        }).then((response) => {
           if (response.ok) {
             return response.json();
           } else {
@@ -22,13 +27,16 @@ const loadData: Epic = (action$) =>
     )
   );
 
-const remove: Epic = (action$) =>
+const remove: Epic = (action$, state$) =>
   action$.pipe(
     ofType(removeAction.request),
     switchMap(({ payload: id }) =>
       from(
         fetch(`http://localhost:3001/books/${id}`, {
           method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${selectToken(state$.value)}`,
+          },
         }).then((response) => {
           if (response.ok) {
             return Promise.resolve();
@@ -43,7 +51,7 @@ const remove: Epic = (action$) =>
     )
   );
 
-const save: Epic = (action$) =>
+const save: Epic = (action$, state$) =>
   action$.pipe(
     ofType(saveAction.request),
     switchMap(({ payload: book }) => {
@@ -57,6 +65,7 @@ const save: Epic = (action$) =>
         method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${selectToken(state$.value)}`,
         },
         body: JSON.stringify(book),
       }).then((response) => {
